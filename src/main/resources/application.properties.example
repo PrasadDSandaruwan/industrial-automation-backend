@@ -16,3 +16,10 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL57InnoDBDiale
 
 # custom banner
 spring.banner.location=classpath:my_banner.txt
+
+# jwt token
+custom.authentication.oauth.client_id=clientId
+custom.authentication.oauth.client_secret=clientSecret
+custom.authentication.jwt_signing_mac_key=jwtSigningKey
+custom.authentication.access_token_validity_seconds=100000
+custom.authentication.oauth.refresh_token_validity_seconds=2000
