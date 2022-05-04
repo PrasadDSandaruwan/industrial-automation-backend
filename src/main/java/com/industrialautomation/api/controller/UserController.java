@@ -34,7 +34,7 @@ public class UserController {
             email = jsonNode.get("email").asText();
             contact_no = jsonNode.get("contact_no").asText();
             nic = jsonNode.get("nic").asText();
-            type_id = jsonNode.get("title_id").asLong();
+            type_id = jsonNode.get("type_id").asLong();
 
         }catch (Exception e) {
             e.printStackTrace();

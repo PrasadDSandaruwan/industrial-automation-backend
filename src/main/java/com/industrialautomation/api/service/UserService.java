@@ -69,6 +69,7 @@ public class UserService implements UserDetailsService {
             user.setLast_name(last_name);
             user.setEmail(email);
             user.setContact_no(contact_no);
+            user.setNic(nic);
 
             user.setAdded_at(LocalDateTime.now());
             user.setUserType(new UserType(type_id));
