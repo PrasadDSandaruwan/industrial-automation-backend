@@ -12,4 +12,6 @@ public interface UserRepository extends CrudRepository<User,Long> {
     @Query("SELECT u FROM User u JOIN FETCH u.authDetails WHERE  u.email=?1 OR u.nic =?2")
     User loadUserByEmailOrNic(String email,String nic);
 
+    @Query("SELECT  u from User u JOIN FETCH u.authDetails JOIN FETCH u.userType WHERE u.id=?1")
+    User findByUserId(long user_id);
 }

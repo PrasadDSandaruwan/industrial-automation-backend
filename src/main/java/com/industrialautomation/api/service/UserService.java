@@ -4,6 +4,7 @@ import com.industrialautomation.api.dao.AuthRepository;
 import com.industrialautomation.api.dao.UserRepository;
 import com.industrialautomation.api.dto.response.DefaultResponseDTO;
 import com.industrialautomation.api.dto.response.ResponseStatus;
+import com.industrialautomation.api.dto.user.UserDetailsDTO;
 import com.industrialautomation.api.model.Auth;
 import com.industrialautomation.api.model.User;
 import com.industrialautomation.api.model.UserType;
@@ -85,5 +86,18 @@ public class UserService implements UserDetailsService {
             return new DefaultResponseDTO(201, ResponseStatus.FAILED,"User add failed.");
         }
 
+    }
+
+    public User findById(Long user_id) {
+        return userRepository.findByUserId(user_id);
+    }
+
+    public Object getUserDetails(Long user_id) {
+        User user = userRepository.findByUserId(user_id);
+
+        if(user == null)
+            return  new DefaultResponseDTO(201,ResponseStatus.INVALID_USER,"Invalid User");
+
+        return new DefaultResponseDTO(200,ResponseStatus.OK,"Data fetched successfully.",new UserDetailsDTO(user));
     }
 }
