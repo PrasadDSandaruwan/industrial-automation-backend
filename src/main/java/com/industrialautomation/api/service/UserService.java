@@ -1,5 +1,6 @@
 package com.industrialautomation.api.service;
 
+import com.industrialautomation.api.dao.AuthRepository;
 import com.industrialautomation.api.dao.UserRepository;
 import com.industrialautomation.api.dto.response.DefaultResponseDTO;
 import com.industrialautomation.api.dto.response.ResponseStatus;
@@ -13,15 +14,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.encrypt.Encryptors;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.LinkedList;
+
 import java.util.Locale;
 
 
@@ -29,6 +30,9 @@ import java.util.Locale;
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AuthRepository authRepository;
 
     @Autowired
     private EntityManager em;
@@ -73,7 +77,7 @@ public class UserService implements UserDetailsService {
             auth.setPassword(passwordEncoder.encode(nic));
             auth.setUser(user);
 
-            userRepository.save(user);
+            authRepository.save(auth);
             return new DefaultResponseDTO(200, ResponseStatus.OK,"User successfully Added.");
         } catch (Exception e){
             e.printStackTrace();

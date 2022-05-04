@@ -16,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String first_name;
@@ -32,6 +32,7 @@ public class User {
 
     private LocalDate birthday;
 
+    @Column(nullable = false)
     private String contact_no;
 
     private String profile_picture;
@@ -40,6 +41,7 @@ public class User {
 
     private LocalDateTime force_password_change_flag;
 
+    @Column(nullable = false)
     private LocalDateTime added_at;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

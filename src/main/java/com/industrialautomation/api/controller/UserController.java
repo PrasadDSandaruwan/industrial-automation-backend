@@ -7,7 +7,6 @@ import com.industrialautomation.api.utilities.InputValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,8 +25,9 @@ public class UserController {
                 jsonNode.hasNonNull("nic") && jsonNode.hasNonNull("type_id") ))
             return new DefaultResponseDTO(201, ResponseStatus.MISSING_INPUTS,"Not all required parameters were present in the Request.");
 
-        String first_name=null, last_name=null, email=null, contact_no=null, nic=null;
-        Long type_id = null;
+        String first_name, last_name, email, contact_no, nic;
+        long type_id;
+
         try{
             first_name = jsonNode.get("first_name").asText();
             last_name = jsonNode.get("last_name").asText();
