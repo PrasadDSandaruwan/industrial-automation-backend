@@ -1,6 +1,7 @@
 package com.industrialautomation.api.security;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -19,8 +20,35 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/v1/add-user")
+                .antMatchers(HttpMethod.POST,
+                        "/v1/user/add-user","/v1/user/get-all-users" )
                 .hasAnyAuthority("ADMIN")
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/v1/user/user-details","/v1/user/force-password-change",
+                        "/v1/user/change-password","/v1/user/first-time-change-password"
+                        )
+                .authenticated()
+
+
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST,
+                        "/v1/user/change-password","/v1/user/first-time-change-password",
+                        "/v1/user/update-profile"
+                )
+                .authenticated()
+
+
+
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.DELETE,
+                        "/v1/user/delete/**"
+                )
+                .hasAnyAuthority("ADMIN")
+
+
         ;
     }
 }
