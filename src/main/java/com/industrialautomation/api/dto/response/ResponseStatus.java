@@ -16,4 +16,6 @@ public enum ResponseStatus {
     INVALID_FILE_TYPE,
     VEHICLE_ALREADY_EXISTS,
     USER_ALREADY_EXISTS,
+    VERIFIED_USER,
+
 }
