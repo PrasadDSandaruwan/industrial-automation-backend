@@ -23,3 +23,5 @@ custom.authentication.oauth.client_secret=clientSecret
 custom.authentication.jwt_signing_mac_key=jwtSigningKey
 custom.authentication.access_token_validity_seconds=100000
 custom.authentication.oauth.refresh_token_validity_seconds=2000
+
+custom.app.frontend_url=http://localhost:3000

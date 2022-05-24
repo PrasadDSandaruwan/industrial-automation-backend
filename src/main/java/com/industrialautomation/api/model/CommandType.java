@@ -1,7 +1,7 @@
 package com.industrialautomation.api.model;
 
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,23 +9,23 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "user_types")
-@Getter @Setter @NoArgsConstructor
-public class UserType {
-
+@Table(name = "command")
+@Getter
+@Setter
+public class CommandType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(nullable = false)
-    private String user_type_name;
+    private String command_type_name;
+
     @Column(nullable = false, unique = true)
     private String slug;
 
-    @OneToMany(mappedBy = "userType", fetch = FetchType.LAZY)
-    private List<User> users;
+    @OneToMany(mappedBy = "commandType", fetch = FetchType.LAZY)
+    private List<Command> commands;
 
-    public UserType(long id) {
-        this.id = id;
-    } 
+
 }

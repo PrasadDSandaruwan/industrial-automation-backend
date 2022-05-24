@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Getter
 @Setter
 public class User {
@@ -36,9 +36,7 @@ public class User {
     private String contact_no;
 
     private String profile_picture;
-
     private LocalDateTime deleted;
-
     private LocalDateTime force_password_change_flag;
 
     @Column(nullable = false)
