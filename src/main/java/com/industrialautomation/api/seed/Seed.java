@@ -1,12 +1,8 @@
 package com.industrialautomation.api.seed;
 
 
-import com.industrialautomation.api.dao.AuthRepository;
-import com.industrialautomation.api.dao.UserRepository;
-import com.industrialautomation.api.dao.UserTypeRepository;
-import com.industrialautomation.api.model.Auth;
-import com.industrialautomation.api.model.User;
-import com.industrialautomation.api.model.UserType;
+import com.industrialautomation.api.dao.*;
+import com.industrialautomation.api.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,10 +24,53 @@ public class Seed implements CommandLineRunner {
     @Autowired
     private AuthRepository authRepository;
 
+    @Autowired
+    private MachineRepository machineRepository;
+
+    @Autowired
+    private MachineTypeRepository machineTypeRepository;
+
+    @Autowired
+    private ProductionLineRepository productionLineRepository;
+
     @Override
     public void run(String... args) throws Exception {
         addUserTypes();
         addUsers();
+        addMachineType();
+        addProductionLine();
+        addMachine();
+    }
+
+    private void addProductionLine() {
+        if(productionLineRepository.count()==0){
+            ProductionLine productionLine = new ProductionLine(1l,"l1","l1");
+            productionLineRepository.save(productionLine);
+        }
+    }
+
+    private void addMachineType() {
+        if(machineTypeRepository.count()==0){
+            MachineType machineType = new MachineType(1l,"Type 1","type_1");
+            machineTypeRepository.save(machineType);
+        }
+    }
+
+    private void addMachine() {
+        if(machineRepository.count()==0){
+            Machine machine = new Machine(
+                    null,
+                    "m 01",
+                    "m_1",
+                    "1",
+                    LocalDateTime.now(),
+                    true,
+                    null,
+                    new ProductionLine(1l),
+                    new MachineType(1l)
+            );
+            machineRepository.save(machine);
+        }
     }
 
     private void addUserTypes(){

@@ -38,6 +38,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                         "/v1/user/update-profile"
                 )
                 .authenticated()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/v1/alarm/add","/v1/alarm/edit/**","/v1/alarm/delete/**",
+                        "/v1/alarm/all","/v1/alarms/details/**")
+                .permitAll()
 
 
 

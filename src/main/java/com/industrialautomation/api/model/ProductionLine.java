@@ -2,6 +2,7 @@ package com.industrialautomation.api.model;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @Table(name = "production_line")
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProductionLine {
 
     @Id
@@ -25,4 +27,14 @@ public class ProductionLine {
 
     @OneToMany(mappedBy = "productionLine", fetch = FetchType.LAZY)
     private List<Machine> machines;
+
+    public ProductionLine(Long id, String line_name, String slug) {
+        this.id = id;
+        this.line_name = line_name;
+        this.slug = slug;
+    }
+
+    public ProductionLine(Long id) {
+        this.id = id;
+    }
 }

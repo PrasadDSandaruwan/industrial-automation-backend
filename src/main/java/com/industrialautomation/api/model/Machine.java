@@ -2,6 +2,7 @@ package com.industrialautomation.api.model;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @Table(name = "machine")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Machine {
 
     @Id
@@ -49,4 +51,19 @@ public class Machine {
     @OneToMany(mappedBy = "machine", fetch = FetchType.LAZY)
     private List<Alarm> alarms;
 
+    public Machine(Long id) {
+        this.id = id;
+    }
+
+    public Machine(Long id, String name, String slug, String license_number, LocalDateTime added_at, boolean is_automated, LocalDateTime deleted, ProductionLine productionLine, MachineType machineType) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+        this.license_number = license_number;
+        this.added_at = added_at;
+        this.is_automated = is_automated;
+        this.deleted = deleted;
+        this.productionLine = productionLine;
+        this.machineType = machineType;
+    }
 }
