@@ -19,15 +19,12 @@ public class Command {
     @Column(nullable = false)
     private String command;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "command_type_id", nullable = false)
     private CommandType commandType;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "machine_id", nullable = false)
     private Machine machine;
-
 
 }

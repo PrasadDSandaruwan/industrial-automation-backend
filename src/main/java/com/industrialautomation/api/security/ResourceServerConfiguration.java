@@ -43,7 +43,12 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .antMatchers("/v1/alarm/add","/v1/alarm/edit/**","/v1/alarm/delete/**",
                         "/v1/alarm/all","/v1/alarms/details/**",
 
-                        "/v1/production-line/add","/v1/machine-type/add")
+                        "/v1/production-line/add","/v1/machine-type/add",
+                        "/v1/machine/add","/v1/machine/edit/**",
+                        "/v1/machine/delete/**","/v1/machine/all","/v1/machine/details/**",
+
+
+                        "/v1/command/add","/v1/command/edit/**")
                 .permitAll()
 
 

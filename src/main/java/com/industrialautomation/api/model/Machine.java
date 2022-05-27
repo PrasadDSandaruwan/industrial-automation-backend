@@ -33,7 +33,7 @@ public class Machine {
     private LocalDateTime added_at;
 
     @Column(nullable = false)
-    private boolean is_automated;
+    private Integer is_automated;
 
     private LocalDateTime deleted;
 
@@ -55,7 +55,7 @@ public class Machine {
         this.id = id;
     }
 
-    public Machine(Long id, String name, String slug, String license_number, LocalDateTime added_at, boolean is_automated, LocalDateTime deleted, ProductionLine productionLine, MachineType machineType) {
+    public Machine(Long id, String name, String slug, String license_number, LocalDateTime added_at, Integer is_automated, LocalDateTime deleted, ProductionLine productionLine, MachineType machineType) {
         this.id = id;
         this.name = name;
         this.slug = slug;

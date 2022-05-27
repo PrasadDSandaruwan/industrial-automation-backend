@@ -33,6 +33,9 @@ public class Seed implements CommandLineRunner {
     @Autowired
     private ProductionLineRepository productionLineRepository;
 
+    @Autowired
+    private CommandTypeRepository commandTypeRepository;
+
     @Override
     public void run(String... args) throws Exception {
         addUserTypes();
@@ -40,31 +43,57 @@ public class Seed implements CommandLineRunner {
         addMachineType();
         addProductionLine();
         addMachine();
+        addCommandType();
+    }
+
+    private void addCommandType() {
+        if (commandTypeRepository.count() == 0) {
+            CommandType commandType = new CommandType(1L, "test type", "ct1");
+            commandTypeRepository.save(commandType);
+            commandType = new CommandType(2L, "test type 2", "ct2");
+            commandTypeRepository.save(commandType);
+            commandType = new CommandType(3L, "test type 3", "ct3");
+            commandTypeRepository.save(commandType);
+            commandType = new CommandType(4L, "test type 4", "ct4");
+            commandTypeRepository.save(commandType);
+        }
     }
 
     private void addProductionLine() {
-        if(productionLineRepository.count()==0){
-            ProductionLine productionLine = new ProductionLine(1l,"l1","l1");
+        if (productionLineRepository.count() == 0) {
+            ProductionLine productionLine = new ProductionLine(1l, "l1", "l1");
+            productionLineRepository.save(productionLine);
+            productionLine = new ProductionLine(2l, "l2", "l2");
+            productionLineRepository.save(productionLine);
+            productionLine = new ProductionLine(3l, "l3", "l3");
             productionLineRepository.save(productionLine);
         }
     }
 
     private void addMachineType() {
-        if(machineTypeRepository.count()==0){
-            MachineType machineType = new MachineType(1l,"Type 1","type_1");
+        if (machineTypeRepository.count() == 0) {
+            MachineType machineType = new MachineType(1l, "Type 1", "type_1");
             machineTypeRepository.save(machineType);
+            machineType = new MachineType(2l, "Type 2", "type_2");
+            machineTypeRepository.save(machineType);
+            machineType = new MachineType(3l, "Type 3", "type_3");
+            machineTypeRepository.save(machineType);
+            machineType = new MachineType(4l, "Type 4", "type_4");
+            machineTypeRepository.save(machineType);
+
+
         }
     }
 
     private void addMachine() {
-        if(machineRepository.count()==0){
+        if (machineRepository.count() == 0) {
             Machine machine = new Machine(
                     null,
                     "m 01",
                     "m_1",
                     "1",
                     LocalDateTime.now(),
-                    true,
+                    1,
                     null,
                     new ProductionLine(1l),
                     new MachineType(1l)
@@ -73,12 +102,12 @@ public class Seed implements CommandLineRunner {
         }
     }
 
-    private void addUserTypes(){
-        if(userTypeRepository.count()==0){
-            String [] type = {"Admin","User"};
-            String [] slug = {"ADMIN","USER"};
+    private void addUserTypes() {
+        if (userTypeRepository.count() == 0) {
+            String[] type = {"Admin", "User"};
+            String[] slug = {"ADMIN", "USER"};
 
-            for (int i=0;i<type.length;i++){
+            for (int i = 0; i < type.length; i++) {
                 UserType userType = new UserType();
                 userType.setUser_type_name(type[i]);
                 userType.setSlug(slug[i]);
@@ -87,8 +116,8 @@ public class Seed implements CommandLineRunner {
         }
     }
 
-    private void addUsers(){
-        if( userRepository.count()==0) {
+    private void addUsers() {
+        if (userRepository.count() == 0) {
 
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String[] fName = {"Admin", "Admin", "Staff", "Staff", "User", "User", "Manager"};

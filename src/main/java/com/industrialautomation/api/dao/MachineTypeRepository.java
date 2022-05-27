@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface MachineTypeRepository  extends CrudRepository<MachineType,Long> {
 
     MachineType getMachineTypeBySlug(String slug);
+    MachineType getMachineTypeById(Long id);
 }

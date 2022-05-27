@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface ProductionLineRepository extends CrudRepository<ProductionLine,Long> {
 
     ProductionLine getProductionLineBySlug(String slug);
+
+    ProductionLine getProductionLineById(Long id);
 }
