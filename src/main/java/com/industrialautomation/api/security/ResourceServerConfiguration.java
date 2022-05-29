@@ -48,7 +48,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                         "/v1/machine/delete/**","/v1/machine/all","/v1/machine/details/**",
 
 
-                        "/v1/command/add","/v1/command/edit/**")
+                        "/v1/command/add","/v1/command/edit/**","/v1/production-line/all","/v1/machine-type/all",
+                        "/v1/connected-machine/add","/v1/connected-machine/edit","/v1/connected-machine/possible/**",
+                        "/v1/connected-machine/rate")
                 .permitAll()
 
 

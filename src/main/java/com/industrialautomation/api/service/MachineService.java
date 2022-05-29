@@ -10,11 +10,8 @@ import com.industrialautomation.api.dto.response.ResponseStatus;
 import com.industrialautomation.api.model.Machine;
 import com.industrialautomation.api.model.MachineType;
 import com.industrialautomation.api.model.ProductionLine;
-import jdk.dynalink.linker.LinkerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.crypto.Mac;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;

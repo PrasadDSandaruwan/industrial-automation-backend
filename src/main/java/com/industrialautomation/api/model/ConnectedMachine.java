@@ -33,5 +33,9 @@ public class ConnectedMachine {
     @Column(nullable = false)
     private Float rate;
 
+    @Column(nullable = false)
+    private Float current_rate;
+
+
 
 }

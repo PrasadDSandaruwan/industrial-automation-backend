@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.industrialautomation.api.dto.response.DefaultResponseDTO;
 import com.industrialautomation.api.dto.response.ResponseStatus;
 import com.industrialautomation.api.service.ProductionLineService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +29,17 @@ public class ProductionLineController {
 
             return productionLineService.addProductionLine(production_line_name,slug);
 
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
+        }
+    }
+
+    @GetMapping("/v1/production-line/all")
+    public Object getAll(){
+        try {
+            return productionLineService.getAll();
         }
         catch (Exception e){
             e.printStackTrace();

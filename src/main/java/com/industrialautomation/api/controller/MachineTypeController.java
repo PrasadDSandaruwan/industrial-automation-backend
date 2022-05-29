@@ -6,7 +6,9 @@ import com.industrialautomation.api.dto.response.DefaultResponseDTO;
 import com.industrialautomation.api.dto.response.ResponseStatus;
 import com.industrialautomation.api.service.MachineService;
 import com.industrialautomation.api.service.MachineTypeService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,16 @@ public class MachineTypeController {
 
         }
         catch (Exception e){
+            e.printStackTrace();
+            return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
+        }
+    }
+
+    @GetMapping("/v1/machine-type/all")
+    public Object getAll(){
+        try {
+            return machineTypeService.getAll();
+        } catch (Exception e){
             e.printStackTrace();
             return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
         }
