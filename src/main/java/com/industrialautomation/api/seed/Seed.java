@@ -61,44 +61,56 @@ public class Seed implements CommandLineRunner {
 
     private void addProductionLine() {
         if (productionLineRepository.count() == 0) {
-            ProductionLine productionLine = new ProductionLine(1l, "l1", "l1");
+            ProductionLine productionLine = new ProductionLine(1L, "Production Line 01", "line_01");
             productionLineRepository.save(productionLine);
-            productionLine = new ProductionLine(2l, "l2", "l2");
+            productionLine = new ProductionLine(2l, "Production Line 02", "line_02");
             productionLineRepository.save(productionLine);
-            productionLine = new ProductionLine(3l, "l3", "l3");
+            productionLine = new ProductionLine(3l, "Production Line 03", "line_03");
             productionLineRepository.save(productionLine);
         }
     }
 
     private void addMachineType() {
         if (machineTypeRepository.count() == 0) {
-            MachineType machineType = new MachineType(1l, "Type 1", "type_1");
+            MachineType machineType = new MachineType(1l, "Production Machine", "production");
             machineTypeRepository.save(machineType);
-            machineType = new MachineType(2l, "Type 2", "type_2");
+            machineType = new MachineType(2l, "Ingredient Machine", "ingredient");
             machineTypeRepository.save(machineType);
-            machineType = new MachineType(3l, "Type 3", "type_3");
+            machineType = new MachineType(3l, "Packing Machine", "packing");
             machineTypeRepository.save(machineType);
-            machineType = new MachineType(4l, "Type 4", "type_4");
-            machineTypeRepository.save(machineType);
-
 
         }
     }
 
     private void addMachine() {
         if (machineRepository.count() == 0) {
-            Machine machine = new Machine(
-                    null,
-                    "m 01",
-                    "m_1",
-                    "1",
-                    LocalDateTime.now(),
-                    1,
-                    null,
-                    new ProductionLine(1l),
-                    new MachineType(1l)
-            );
-            machineRepository.save(machine);
+
+            String [] name ={ "Machine 01 L01","Machine 02 L01","Machine 03 L01","Machine 04 L01","Machine 05 L01","Machine 06 L01"
+                    ,"Machine 01 L02","Machine 02 L02","Machine 03 L02","Machine 01 L03","Machine 02 L03"};
+            String [] slug = { "Machine 01 L01","Machine 02 L01","Machine 03 L01","Machine 04 L01","Machine 05 L01","Machine 06 L01"
+                    ,"Machine 01 L02","Machine 02 L02","Machine 03 L02","Machine 01 L03","Machine 02 L03"};
+            Long [] p_line = {1L,1L,1L,1L,1L,1L,2L,2L,2L,3L,3L,3L};
+            Long [] m_type = {1L,1L,1L,2L,2L,3L,1L,2L,3L,1L,3L};
+
+            Machine machine;
+            for (Integer i = 0; i < name.length; i++) {
+                machine = new Machine(
+                        null,
+                        name[i],
+                        slug[i],
+                        i.toString() ,
+                        LocalDateTime.now(),
+                        1,
+                        null,
+                        0F,
+                        0F,
+                        0F,
+                        0F,
+                        new ProductionLine(p_line[i]),
+                        new MachineType(m_type[i])
+                );
+                machineRepository.save(machine);
+            }
         }
     }
 

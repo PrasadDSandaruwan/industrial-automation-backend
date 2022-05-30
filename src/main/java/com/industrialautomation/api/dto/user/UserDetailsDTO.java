@@ -36,9 +36,10 @@ public class UserDetailsDTO {
 
     private LocalDateTime added_at;
 
-    private UserTypeDTO user_type;
+    private String user_type;
 
-    public UserDetailsDTO(User u){ this.id = id;
+    public UserDetailsDTO(User u){
+        this.id = u.getId();
         this.first_name = u.getFirst_name();
         this.last_name = u.getLast_name();
         this.email = u.getEmail();
@@ -49,6 +50,6 @@ public class UserDetailsDTO {
         this.deleted = u.getDeleted();
         this.force_password_change_flag = u.getForce_password_change_flag();
         this.added_at = u.getAdded_at();
-        this.user_type = new UserTypeDTO( u.getUserType());
+        this.user_type = u.getUserType().getUser_type_name();
     }
 }

@@ -25,11 +25,13 @@ public class MachineController {
             Integer is_automated = (jsonNode.hasNonNull("is_automated")) ? jsonNode.get("is_automated").asInt(): null;
             Long production_line_id = (jsonNode.hasNonNull("production_line_id")) ? jsonNode.get("production_line_id").asLong(): null;
             Long machine_type_id = (jsonNode.hasNonNull("machine_type_id")) ? jsonNode.get("machine_type_id").asLong(): null;
+//            Double rate = (jsonNode.hasNonNull("rate")) ? jsonNode.get("rate").asDouble(): null;
+//            Double temp = (jsonNode.hasNonNull("temp")) ? jsonNode.get("temp").asDouble(): null;
 
-            if (name ==null || slug==null ||license_number==null || is_automated==null || production_line_id ==null || machine_type_id==null)
+            if (name ==null || slug==null ||license_number==null || is_automated==null || production_line_id ==null || machine_type_id==null )
                 return new DefaultResponseDTO(201, ResponseStatus.MISSING_INPUTS,"Some inputs are missing.");
 
-            return machineService.addMachine(name, slug, license_number,is_automated,production_line_id,machine_type_id);
+            return machineService.addMachine(name, slug, license_number,is_automated,production_line_id,machine_type_id );
 
         }
 
@@ -99,6 +101,20 @@ public class MachineController {
             return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Machine Id missing");
         try {
             return machineService.getMachineDetails(id);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
+        }
+    }
+
+    @GetMapping("/v1/machine/get-by-type/{type}")
+    public Object getAllByType(@PathVariable String type){
+        if( type==null)
+            return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Machine Type is missing.");
+
+        try {
+            return machineService.getAllByType(type);
         }
         catch (Exception e){
             e.printStackTrace();

@@ -78,7 +78,6 @@ public class UserController {
     @GetMapping("/v1/user/force-password-change")
     public Object forcePasswordChange(Principal principal ){
 
-
         try{
             if (principal == null)
                 return  new DefaultResponseDTO(201,ResponseStatus.MISSING_INPUTS,"Token not found");
@@ -99,7 +98,6 @@ public class UserController {
 
     @PostMapping("/v1/user/change-password")
     public Object changePassword(Principal principal, @RequestBody JsonNode jsonNode){
-
         try{
             if (principal == null)
                 return  new DefaultResponseDTO(201,ResponseStatus.MISSING_INPUTS,"Token not found");
@@ -150,7 +148,7 @@ public class UserController {
     }
 
     @PostMapping("/v1/user/update-profile")
-    public Object updateUserProfile(Principal principal, UserEditDTO userEditDTO){
+    public Object updateUserProfile(Principal principal, @RequestBody JsonNode jsonNode){
         try{
             if (principal == null)
                 return  new DefaultResponseDTO(201,ResponseStatus.MISSING_INPUTS,"Token not found");
@@ -159,12 +157,27 @@ public class UserController {
             if (email == null)
                 return  new DefaultResponseDTO(201,ResponseStatus.INVALID_USER,"Invalid Token");
 
-            System.out.println( "First name "+userEditDTO.getFirst_name());
-            System.out.println("Birthday "+userEditDTO.getBirthday());
-            if (userEditDTO.getBirthday() == null || userEditDTO.getContact_no() ==null || userEditDTO.getFirst_name() ==null || userEditDTO.getLast_name() == null)
-                return  new DefaultResponseDTO(201,ResponseStatus.MISSING_INPUTS,"Inputs are missing.");
+            if (!(jsonNode.hasNonNull("first_name") && jsonNode.hasNonNull("last_name") &&
+                  jsonNode.hasNonNull("contact_no")
+            ))
+                return new DefaultResponseDTO(201, ResponseStatus.MISSING_INPUTS,"Not all required parameters were present in the Request.");
 
-            return  userService.editUserProfile(email,userEditDTO);
+            String first_name, last_name, contact_no, birthday;
+
+
+            try{
+                first_name = jsonNode.get("first_name").asText();
+                last_name = jsonNode.get("last_name").asText();
+                contact_no = jsonNode.get("contact_no").asText();
+                birthday = jsonNode.get("birthday").asText();
+            }catch (Exception e) {
+                e.printStackTrace();
+                return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Inputs are not valid.");
+            }
+
+
+
+            return  userService.editUserProfile(email,first_name,last_name,contact_no,birthday);
 
         }catch (Exception e) {
             e.printStackTrace();

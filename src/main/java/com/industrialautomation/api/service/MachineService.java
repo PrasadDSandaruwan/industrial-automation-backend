@@ -12,9 +12,15 @@ import com.industrialautomation.api.model.MachineType;
 import com.industrialautomation.api.model.ProductionLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class MachineService {
@@ -28,8 +34,11 @@ public class MachineService {
     @Autowired
     private MachineTypeRepository machineTypeRepository;
 
+    @Autowired
+    private EntityManager em;
 
-    public Object addMachine(String name, String slug, String license_number, Integer is_automated, Long production_line_id, Long machine_type_id) {
+
+    public Object addMachine(String name, String slug, String license_number, Integer is_automated, Long production_line_id, Long machine_type_id ) {
 
         Machine machine = machineRepository.getMachineBySlug(slug);
         if(machine!=null)
@@ -42,13 +51,13 @@ public class MachineService {
         MachineType machineType = machineTypeRepository.getMachineTypeById(machine_type_id);
         if(machineType == null)
             return new DefaultResponseDTO(201, ResponseStatus.INVALID_INPUTS,"No such Machine Type.");
-        Boolean automated =null;
+
 
         if(is_automated!=1 && is_automated!=0)
             return new DefaultResponseDTO(201, ResponseStatus.INVALID_INPUTS,"Automated can be zero or one");
 
 
-        machine = new Machine(null,name,slug,license_number, LocalDateTime.now(),is_automated,null,productionLine,machineType);
+        machine = new Machine(null,name,slug,license_number, LocalDateTime.now(),is_automated,null,0F,0F, 0F, 0F,productionLine,machineType);
         machineRepository.save(machine);
 
         return new DefaultResponseDTO(200,ResponseStatus.OK,"Successfully Added.");
@@ -123,5 +132,31 @@ public class MachineService {
         if(machine==null)
             return new DefaultResponseDTO(201, ResponseStatus.INVALID_INPUTS,"Invalid Machine Id.");
         return new DefaultResponseDTO(200,ResponseStatus.OK,"Data Fetched Successfully.",new MachineDetailsDTO(machine));
+    }
+
+    public Object getAllByType(String type) {
+
+        if((!type.equals("INGRE")) && (!type.equals("PROD")) && (!type.equals("PACK")) )
+            return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"No such machine type");
+
+
+        String q = "SELECT  m FROM Machine m JOIN FETCH m.machineType JOIN FETCH m.productionLine WHERE m.deleted IS NULL AND  ";
+
+        if(type.equals("INGRE"))
+            q+= " m.machineType.slug='ingredient' ";
+        if(type.equals("PROD"))
+            q+= " m.machineType.slug='production' ";
+        if(type.equals("PACK"))
+            q+= " m.machineType.slug='packing' ";
+        Query query = em.createQuery(q);
+
+        List<Machine> machines = query.getResultList();
+
+        List<MachineDetailsDTO> machineDetailsDTOS = new LinkedList<>();
+        for (Machine m: machines)
+            machineDetailsDTOS.add( new MachineDetailsDTO(m));
+
+        return new DefaultResponseDTO(200,ResponseStatus.OK,"Data Fetched Successfully.",machineDetailsDTOS);
+
     }
 }

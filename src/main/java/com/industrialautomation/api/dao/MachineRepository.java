@@ -19,6 +19,11 @@ public interface MachineRepository extends CrudRepository<Machine,Long> {
     Machine getMachineDetails(Long id);
 
 
-    @Query("SELECT  m FROM  Machine m JOIN FETCH m.productionLine WHERE m.productionLine.id in (SELECT u.productionLine.id FROM  Machine u WHERE u.id=?1) AND m.deleted IS NULL")
+    @Query("SELECT  m FROM  Machine m JOIN FETCH m.productionLine WHERE m.productionLine.id in " +
+            "(SELECT u.productionLine.id FROM  Machine u WHERE u.id=?1) " +
+            "AND m.deleted IS NULL")
     List<Machine> getPossibleMachines(Long id);
+
+    @Query("SELECT m.id FROM  Machine m WHERE m.deleted IS NULL ")
+    List<Long> getAllMachineId();
 }

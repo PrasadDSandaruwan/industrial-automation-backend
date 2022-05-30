@@ -15,37 +15,19 @@ public class ConnectedMachineController {
     private ConnectedMachineService connectedMachineService;
 
 
-    @PostMapping("/v1/connected-machine/add")
-    public Object addConnectedMachine(@RequestBody JsonNode jsonNode){
-        try {
-            Long machine_id = (jsonNode.hasNonNull("machine_id")) ? jsonNode.get("machine_id").asLong(): null;
-            Long connected_machine_id = (jsonNode.hasNonNull("connected_machine_id")) ? jsonNode.get("connected_machine_id").asLong(): null;
-            Double rate = (jsonNode.hasNonNull("rate")) ? jsonNode.get("rate").asDouble(): null;
-
-
-            if(machine_id==null || connected_machine_id==null || rate==null)
-                return new DefaultResponseDTO(201, ResponseStatus.MISSING_INPUTS,"Some inputs are missing.");
-
-            return connectedMachineService.addConnectedMachine(machine_id,connected_machine_id,rate);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
-        }
-    }
-
     @PostMapping("/v1/connected-machine/edit")
     public Object editConnectedMachine(@RequestBody JsonNode jsonNode){
         try {
             Long machine_id = (jsonNode.hasNonNull("machine_id")) ? jsonNode.get("machine_id").asLong(): null;
             Long connected_machine_id = (jsonNode.hasNonNull("connected_machine_id")) ? jsonNode.get("connected_machine_id").asLong(): null;
             Double rate = (jsonNode.hasNonNull("rate")) ? jsonNode.get("rate").asDouble(): null;
+            Double temp = (jsonNode.hasNonNull("temp")) ? jsonNode.get("temp").asDouble(): null;
 
 
-            if(machine_id==null || connected_machine_id==null || rate==null)
+            if(machine_id==null || connected_machine_id==null || rate==null|| temp==null)
                 return new DefaultResponseDTO(201, ResponseStatus.MISSING_INPUTS,"Some inputs are missing.");
 
-            return connectedMachineService.editConnectedMachine(machine_id,connected_machine_id,rate);
+            return connectedMachineService.editConnectedMachine(machine_id,connected_machine_id,rate,temp);
         }
         catch (Exception e){
             e.printStackTrace();

@@ -37,7 +37,6 @@ public class CommandController {
 
     @PostMapping("/v1/command/edit/{id}")
     public Object editCommand(@RequestBody JsonNode jsonNode, @PathVariable Long id) {
-
         if(id==null)
             return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Command Id missing");
 

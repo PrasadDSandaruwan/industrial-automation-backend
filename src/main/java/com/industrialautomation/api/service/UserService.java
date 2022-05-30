@@ -172,21 +172,22 @@ public class UserService implements UserDetailsService {
         for( User u: users)
             userDetailsDTOS.add(new UserDetailsDTO(u));
 
-        return new DefaultResponseDTO(200,ResponseStatus.OK,"Data fetched successfully.");
+        return new DefaultResponseDTO(200,ResponseStatus.OK,"Data fetched successfully.",userDetailsDTOS);
 
     }
 
-    public Object editUserProfile(String email, UserEditDTO userEditDTO) {
+    public Object editUserProfile(String email, String first_name,
+                                  String last_name, String contact_no,String birthday) {
 
         User user = userRepository.loadUserByEmail(email);
 
         if(user == null)
             return  new DefaultResponseDTO(201,ResponseStatus.INVALID_USER,"Invalid User.");
 
-        user.setFirst_name(userEditDTO.getFirst_name());
-        user.setLast_name(userEditDTO.getLast_name());
-        user.setContact_no(userEditDTO.getContact_no());
-        user.setBirthday(userEditDTO.getBirthday());
+        user.setFirst_name(first_name);
+        user.setLast_name(last_name);
+        user.setContact_no(contact_no);
+        user.setBirthday(null);
 
         userRepository.save(user);
 
