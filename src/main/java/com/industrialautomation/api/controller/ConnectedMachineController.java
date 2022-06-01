@@ -21,13 +21,13 @@ public class ConnectedMachineController {
             Long machine_id = (jsonNode.hasNonNull("machine_id")) ? jsonNode.get("machine_id").asLong(): null;
             Long connected_machine_id = (jsonNode.hasNonNull("connected_machine_id")) ? jsonNode.get("connected_machine_id").asLong(): null;
             Double rate = (jsonNode.hasNonNull("rate")) ? jsonNode.get("rate").asDouble(): null;
-            Double temp = (jsonNode.hasNonNull("temp")) ? jsonNode.get("temp").asDouble(): null;
+//            Double temp = (jsonNode.hasNonNull("temp")) ? jsonNode.get("temp").asDouble(): null;
 
 
-            if(machine_id==null || connected_machine_id==null || rate==null|| temp==null)
+            if(machine_id==null || connected_machine_id==null || rate==null)
                 return new DefaultResponseDTO(201, ResponseStatus.MISSING_INPUTS,"Some inputs are missing.");
 
-            return connectedMachineService.editConnectedMachine(machine_id,connected_machine_id,rate,temp);
+            return connectedMachineService.editConnectedMachine(machine_id,connected_machine_id,rate);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -38,7 +38,6 @@ public class ConnectedMachineController {
 
     @GetMapping("/v1/connected-machine/possible/{id}")
     public Object getPossibleConnection(@PathVariable Long id){
-
         if(id==null)
             return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Notification Id missing");
 

@@ -1,12 +1,17 @@
 package com.industrialautomation.api.service;
 
 
+import com.industrialautomation.api.dao.AlarmRepository;
 import com.industrialautomation.api.dao.MachineRepository;
 import com.industrialautomation.api.dao.MachineTypeRepository;
 import com.industrialautomation.api.dao.ProductionLineRepository;
 import com.industrialautomation.api.dto.admin.MachineDetailsDTO;
+import com.industrialautomation.api.dto.admin.NearestMachineDTO;
 import com.industrialautomation.api.dto.response.DefaultResponseDTO;
 import com.industrialautomation.api.dto.response.ResponseStatus;
+import com.industrialautomation.api.dto.user.DemoAlarm;
+import com.industrialautomation.api.dto.user.DemoMachine;
+import com.industrialautomation.api.model.Alarm;
 import com.industrialautomation.api.model.Machine;
 import com.industrialautomation.api.model.MachineType;
 import com.industrialautomation.api.model.ProductionLine;
@@ -16,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +43,11 @@ public class MachineService {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private AlarmRepository alarmRepository;
 
-    public Object addMachine(String name, String slug, String license_number, Integer is_automated, Long production_line_id, Long machine_type_id ) {
+
+    public Object addMachine(String name, String slug, String license_number, Integer is_automated, Long production_line_id, Long machine_type_id ,double rate, double temp) {
 
         Machine machine = machineRepository.getMachineBySlug(slug);
         if(machine!=null)
@@ -57,14 +66,14 @@ public class MachineService {
             return new DefaultResponseDTO(201, ResponseStatus.INVALID_INPUTS,"Automated can be zero or one");
 
 
-        machine = new Machine(null,name,slug,license_number, LocalDateTime.now(),is_automated,null,0F,0F, 0F, 0F,productionLine,machineType);
+        machine = new Machine(null,name,slug,license_number, LocalDateTime.now(),is_automated,null,(float) temp,(float) rate,(float) temp,(float) rate,productionLine,machineType);
         machineRepository.save(machine);
 
         return new DefaultResponseDTO(200,ResponseStatus.OK,"Successfully Added.");
 
     }
 
-    public Object edit(String name, String slug, String license_number, Integer is_automated, Long production_line_id, Long machine_type_id , Long id) {
+    public Object edit(String name, String slug, String license_number, Integer is_automated, Long production_line_id, Long machine_type_id , Long id, double rate, double temp) {
         Machine machine = machineRepository.getMachineBySlug(slug);
         if(machine!=null){
             if(machine.getId()!=id)
@@ -94,6 +103,10 @@ public class MachineService {
         machine.setIs_automated(is_automated);
         machine.setProductionLine(productionLine);
         machine.setMachineType(machineType);
+        machine.setInt_tempe((float) temp);
+        machine.setCurrent_temp((float) temp);
+        machine.setCurrent_rate((float) rate);
+        machine.setInt_rate((float) rate);
         machineRepository.save(machine);
 
         return new DefaultResponseDTO(200,ResponseStatus.OK,"Successfully Added.");
@@ -157,6 +170,54 @@ public class MachineService {
             machineDetailsDTOS.add( new MachineDetailsDTO(m));
 
         return new DefaultResponseDTO(200,ResponseStatus.OK,"Data Fetched Successfully.",machineDetailsDTOS);
+
+    }
+
+    public Object getMachineByLine() {
+        List<Long> productionLines = productionLineRepository.getAllIdList();
+
+        List<Object> data = new LinkedList<>();
+
+        List<Alarm> alarms = alarmRepository.getAlarmsWithProductionLine();
+
+        System.out.println("No alarms "+alarms.size());
+
+
+        List<Machine> machines = machineRepository.getAllMachines();
+
+        for (Long i:productionLines){
+            List<Object> line = new LinkedList<>();
+
+
+            for (Machine m: machines){
+                HashMap<String,Object> add = new HashMap<>();
+
+
+                if (m.getProductionLine().getId()==i){
+                    boolean found = false;
+                    add.put("machine", new DemoMachine(m));
+
+                    for (Alarm alarm: alarms){
+                        System.out.println("Inside alarms "+alarm.getMachine().getId() + " "+m.getId());
+                        if(alarm.getMachine().getId() == m.getId()){
+                            found =true;
+                            add.put("alarm", new DemoAlarm(alarm));
+                        }
+                    }
+                    if (!found){
+                        add.put("alarm",new LinkedList<>());
+                    }
+                    line.add(add);
+                }
+
+
+
+            }
+            data.add(line);
+        }
+
+        return new DefaultResponseDTO(200,ResponseStatus.OK,"Data fetched successfully.", data);
+
 
     }
 }

@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 
 @Component
@@ -36,6 +39,14 @@ public class Seed implements CommandLineRunner {
     @Autowired
     private CommandTypeRepository commandTypeRepository;
 
+    @Autowired
+    private RateRepository rateRepository;
+
+    @Autowired AlarmRepository alarmRepository;
+
+    @Autowired ConnectedMachineRepository connectedMachineRepository;
+
+
     @Override
     public void run(String... args) throws Exception {
         addUserTypes();
@@ -44,6 +55,114 @@ public class Seed implements CommandLineRunner {
         addProductionLine();
         addMachine();
         addCommandType();
+        addAlarm();
+        addRates();
+        addConnectedMachines();
+    }
+
+    private void addConnectedMachines() {
+
+
+        if (connectedMachineRepository.count()==0){
+
+            Long[] from = {1L,2L,3L,4L,1L};
+            Long[] to ={2L,3L, 4L, 6L,5L};
+
+            for (int i=0 ;i<from.length ;i++){
+                ConnectedMachineKey key = new ConnectedMachineKey();
+                key.setMachine_id(from[i]);
+                key.setConnected_machine_id(to[i]);
+
+                ConnectedMachine machine = new ConnectedMachine();
+
+                machine.setMachine(new Machine(from[i]));
+                machine.setConnectedMachine(new Machine(to[i]));
+
+                machine.setRate(20F);
+                machine.setCurrent_rate(20F);
+
+                machine.setId(key);
+
+                connectedMachineRepository.save(machine);
+            }
+
+        }
+    }
+
+    private void addRates() {
+
+        if (rateRepository.count()==0){
+            Float min = 10F;
+            Float max = 60F;
+
+            Random random = new Random();
+            List<Float> rate = new LinkedList<>();
+
+            List<Integer> is_temp = new LinkedList<>();
+
+
+            for(int i=0;i<100;i++){
+                Float rand = random.nextFloat() * (max - min) + min;
+                rate.add(rand);
+                if (i>50)
+                    is_temp.add(1);
+                else
+                    is_temp.add(0);
+
+            }
+
+            Long[] machine = {1L,4L,6L};
+
+            List<Rates> ratesList = new LinkedList<>();
+
+            for (int j=0;j<machine.length;j++){
+                for (int i=0; i< rate.size();i++){
+                    Rates rates = new Rates(
+                            null,
+                            LocalDateTime.now().plusMinutes(i),
+                            rate.get(i),
+                            is_temp.get(i),
+                            new Machine( machine[j])
+
+                    );
+
+                    ratesList.add(rates);
+
+
+                }
+            }
+
+            rateRepository.saveAll(ratesList);
+        }
+
+
+
+    }
+
+    private void addAlarm() {
+        if (alarmRepository.count()==0){
+            String [] name ={ "Alarm 01 M01","Alarm 01 M02","Alarm 01 M04","Alarm 01 M06","Alarm 01 M08","Alarm 01 M10"};
+            String [] slug = { "Alarm 01 L01","Alarm 02 L01","Alarm 03 L01","Alarm 04 L01","Alarm 05 L01","Alarm 06 L01"
+                    ,"Alarm 01 L02","Alarm 02 L02","Alarm 03 L02","Alarm 01 L03","Alarm 02 L03"};
+            Long [] machine = {1L,2L,4L,6L,8L,10L,2L,2L,2L,3L,3L,3L};
+
+            Alarm alarm;
+            for (Integer i = 0; i < name.length; i++) {
+                alarm = new Alarm(
+                        null,
+                        name[i],
+                        slug[i],
+                        LocalDateTime.now(),
+                        null,
+                        new Machine(machine[i])
+
+                );
+                alarmRepository.save(alarm);
+            }
+        }
+
+
+
     }
 
     private void addCommandType() {
@@ -92,6 +211,10 @@ public class Seed implements CommandLineRunner {
             Long [] p_line = {1L,1L,1L,1L,1L,1L,2L,2L,2L,3L,3L,3L};
             Long [] m_type = {1L,1L,1L,2L,2L,3L,1L,2L,3L,1L,3L};
 
+            Float[] temp =  {50F,20F,50F,60F,50F,70F,50F,80F,50F,50F,50F};
+
+            Float[] rate =  {40F,20F,50F,60F,50F,70F,40F,80F,50F,50F,50F};;
+
             Machine machine;
             for (Integer i = 0; i < name.length; i++) {
                 machine = new Machine(
@@ -102,10 +225,10 @@ public class Seed implements CommandLineRunner {
                         LocalDateTime.now(),
                         1,
                         null,
-                        0F,
-                        0F,
-                        0F,
-                        0F,
+                        temp[i],
+                        rate[i],
+                        temp[i],
+                        rate[i],
                         new ProductionLine(p_line[i]),
                         new MachineType(m_type[i])
                 );

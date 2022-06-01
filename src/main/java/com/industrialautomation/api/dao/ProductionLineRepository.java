@@ -14,4 +14,6 @@ public interface ProductionLineRepository extends CrudRepository<ProductionLine,
 
     @Query("SELECT u FROM ProductionLine u")
     List<ProductionLine> getAll();
+    @Query("SELECT p.id FROM ProductionLine p")
+    List<Long> getAllIdList();
 }

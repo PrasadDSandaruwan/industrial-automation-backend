@@ -31,6 +31,10 @@ public class MachineDetailsDTO {
     private ProductionLineDTO production_line;
     private MachineTypeDTO machine_type;
 
+    private Float rate;
+
+    private Float temp;
+
     public MachineDetailsDTO(Machine m) {
         this.id = m.getId();
         this.name = m.getName();
@@ -41,5 +45,7 @@ public class MachineDetailsDTO {
         this.deleted = m.getDeleted();
         this.production_line = new ProductionLineDTO( m.getProductionLine());
         this.machine_type = new MachineTypeDTO( m.getMachineType());
+        this.rate = m.getInt_rate();
+        this.temp = m.getInt_tempe();
     }
 }

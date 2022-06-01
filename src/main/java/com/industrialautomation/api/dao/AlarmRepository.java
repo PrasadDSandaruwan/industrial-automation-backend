@@ -20,5 +20,8 @@ public interface AlarmRepository extends CrudRepository<Alarm,Long> {
     @Query("SELECT  a FROM  Alarm  a JOIN FETCH a.machine WHERE a.id=?1")
     Alarm getAlarmsByIdWithMachine(Long id);
 
+    @Query("SELECT a FROM Alarm a JOIN FETCH a.machine  WHERE a.deleted IS NULL ")
+    List<Alarm> getAlarmsWithProductionLine();
+
 
 }

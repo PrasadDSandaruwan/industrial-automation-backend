@@ -18,4 +18,6 @@ public enum ResponseStatus {
     USER_ALREADY_EXISTS,
     VERIFIED_USER,
 
+    SHUTDOWN,
+
 }

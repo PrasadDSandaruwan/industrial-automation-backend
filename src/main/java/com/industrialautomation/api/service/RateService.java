@@ -57,7 +57,7 @@ public class RateService {
         query.setParameter("machine_id",machine_id);
         query.setParameter("is_temp",is_temp);
 
-        query.setMaxResults(5);
+        query.setMaxResults(50);
 
         List<Rates> rates = query.getResultList();
 
@@ -93,9 +93,9 @@ public class RateService {
         if( (is_temp!= 0) && (is_temp!=1))
             return new DefaultResponseDTO(201, ResponseStatus.INVALID_INPUTS,"Invalid value for temperature test.");
 
-        List<Machine> machines = machineRepository.getAllMachines();
-
-        List<Rates> rates = new LinkedList<>();
+//        List<Machine> machines = machineRepository.getAllMachines();
+//
+//        List<Rates> rates = new LinkedList<>();
 
 
         Float f_rate = (float) rate;
@@ -133,24 +133,9 @@ public class RateService {
 //        }
 //
 //        rateRepository.saveAll(rates);
+//
+//        List<Machine> updated =(List<Machine>) handleChangeOfRate.handleChangeOfRate(machine,f_rate,is_temp);
 
-        List<Machine> updated =(List<Machine>) handleChangeOfRate.handleChangeOfRate(machine,f_rate,is_temp);
-        List<ChangeRateDTO> machineDetailsDTOS = new LinkedList<>();
-
-        for (Machine m:updated)
-            machineDetailsDTOS.add(new ChangeRateDTO(
-                    m.getId() ,
-                    m.getName(),
-                    null,
-                    null,
-                    m.getCurrent_rate(),
-                    m.getCurrent_temp(),
-                    m.getInt_rate(),
-                    m.getCurrent_temp()
-                    ));
-
-
-
-        return new DefaultResponseDTO(200,ResponseStatus.OK,"Successfully Updated.", machineDetailsDTOS);
+        return new DefaultResponseDTO(200,ResponseStatus.OK,"Successfully Updated.", handleChangeOfRate.newHandleChaneOfRate(machine_id,f_rate,is_temp));
     }
 }

@@ -50,7 +50,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
                         "/v1/command/add","/v1/command/edit/**","/v1/production-line/all","/v1/machine-type/all",
                         "/v1/connected-machine/add","/v1/connected-machine/edit","/v1/connected-machine/possible/**",
-                        "/v1/connected-machine/rate",
+                        "/v1/connected-machine/rate","/v1/machine/get-by-line",
 
                         "/v1/rates/get-rates","/v1/rates/add")
                 .permitAll()
