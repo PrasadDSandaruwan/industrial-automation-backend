@@ -40,7 +40,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,  "/v1/production-line/all","/v1/machine-type/all","/v1/connected-machine/possible/**"
-                , "/v1/alarms/unique/**","/v1/machine/unique/**","/v1/production-line/unique/**","/v1/user/unique/"
+                , "/v1/alarms/unique/**","/v1/machine/unique/**","/v1/production-line/unique/**","/v1/user/unique/","/v1/machine/id-list"
 
                 )
                 .hasAnyAuthority("ADMIN")
