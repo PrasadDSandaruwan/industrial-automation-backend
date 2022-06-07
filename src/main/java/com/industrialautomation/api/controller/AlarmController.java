@@ -93,4 +93,18 @@ public class AlarmController {
             return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
         }
     }
+
+    @GetMapping("/v1/alarms/unique/{slug}")
+    public Object checkUnique(@PathVariable String slug){
+        if (slug == null)
+            return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Alarm slug missing");
+
+        try {
+            return alarmService.checkUnique(slug);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
+        }
+    }
 }

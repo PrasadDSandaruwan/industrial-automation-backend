@@ -168,7 +168,7 @@ public class ConnectedMachineService {
 
         }
 
-        String s_q_2 = "SELECT DISTINCT m FROM Machine  m WHERE m.productionLine.id=(SELECT p.productionLine.id FROM Machine p WHERE p.id =:machine_id)";
+        String s_q_2 = "SELECT DISTINCT m FROM Machine  m WHERE m.productionLine.id=(SELECT p.productionLine.id FROM Machine p WHERE p.id =:machine_id) AND m.deleted IS NULL ";
         Query query2 = em.createQuery(s_q_2);
         query2.setParameter("machine_id", id);
         List<Machine> line_machines = query2.getResultList();

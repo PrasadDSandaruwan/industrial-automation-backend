@@ -212,4 +212,18 @@ public class UserController {
             return new DefaultResponseDTO(201,ResponseStatus.FAILED,"Operation Failed.");
         }
     }
+
+    @GetMapping("/v1/user/unique/{slug}")
+    public Object checkUnique(@PathVariable String slug){
+        if (slug == null)
+            return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Alarm slug missing");
+
+        try {
+            return userService.checkUnique(slug);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
+        }
+    }
 }

@@ -5,6 +5,7 @@ import com.industrialautomation.api.dao.ProductionLineRepository;
 import com.industrialautomation.api.dto.admin.ProductionLineDTO;
 import com.industrialautomation.api.dto.response.DefaultResponseDTO;
 import com.industrialautomation.api.dto.response.ResponseStatus;
+import com.industrialautomation.api.model.Machine;
 import com.industrialautomation.api.model.ProductionLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,4 +44,15 @@ public class ProductionLineService {
 
         return new DefaultResponseDTO(200,ResponseStatus.OK,"Data fetched successfully.",results );
     }
+
+    public Object checkUnique(String slug) {
+
+        ProductionLine line = productionLineRepository.getProductionLineBySlug(slug);
+
+        if (line==null)
+            return new DefaultResponseDTO(200,ResponseStatus.OK,"Slug is unique.");
+
+        return new DefaultResponseDTO(201,ResponseStatus.ALREADY_EXISTS,"Already exists");
+    }
+
 }

@@ -7,6 +7,7 @@ import com.industrialautomation.api.dto.response.ResponseStatus;
 import com.industrialautomation.api.dto.user.UserDetailsDTO;
 import com.industrialautomation.api.dto.user.UserEditDTO;
 import com.industrialautomation.api.model.Auth;
+import com.industrialautomation.api.model.Machine;
 import com.industrialautomation.api.model.User;
 import com.industrialautomation.api.model.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -207,5 +208,15 @@ public class UserService implements UserDetailsService {
         user.setDeleted(LocalDateTime.now());
         userRepository.save(user);
         return  new DefaultResponseDTO(200,ResponseStatus.OK,"User successfully deleted.");
+    }
+
+    public Object checkUnique(String slug) {
+
+        User user = userRepository.loadUserByEmailNic(slug);
+
+        if (user==null)
+            return new DefaultResponseDTO(200,ResponseStatus.OK,"User details is unique.");
+
+        return new DefaultResponseDTO(201,ResponseStatus.ALREADY_EXISTS,"Already exists");
     }
 }

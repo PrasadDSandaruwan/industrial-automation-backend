@@ -147,7 +147,12 @@ public class HandleChangeOfRate {
 
             }
 
-            return new DefaultResponseDTO(200, ResponseStatus.OK,"SHUTDOWN MACHINES",machineDetailsDTOS);
+            Map<String,Object> _zero = new HashMap();
+            _zero.put("machines",machineDetailsDTOS);
+            _zero.put("alarms",changeRatioAlarmDTOS);
+
+
+            return new DefaultResponseDTO(200, ResponseStatus.OK,"SHUTDOWN MACHINES",_zero);
         }
 
 

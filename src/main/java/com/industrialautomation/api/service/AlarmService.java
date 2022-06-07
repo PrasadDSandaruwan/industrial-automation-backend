@@ -124,4 +124,16 @@ public class AlarmService {
             return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Invalid Alarm Id.");
         return  new DefaultResponseDTO(200,ResponseStatus.OK,"Data fetched successfully.", new AlarmDetailsDTO(alarm));
     }
+
+    public Object checkUnique(String slug) {
+
+        Alarm alarm = alarmRepository.getAlarmBySlug(slug);
+
+        if (alarm==null)
+            return new DefaultResponseDTO(200,ResponseStatus.OK,"Slug is unique.");
+
+        return new DefaultResponseDTO(201,ResponseStatus.ALREADY_EXISTS,"Already exists");
+    }
+
+
 }

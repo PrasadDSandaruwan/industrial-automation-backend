@@ -135,4 +135,29 @@ public class MachineController {
             return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
         }
     }
+
+    @GetMapping("/v1/machine/unique/{slug}")
+    public Object checkUnique(@PathVariable String slug){
+        if (slug == null)
+            return new DefaultResponseDTO(201,ResponseStatus.INVALID_INPUTS,"Machine slug missing");
+
+        try {
+            return machineService.checkUnique(slug);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
+        }
+    }
+
+    @GetMapping("/v1/machine/id-list")
+    public Object getIdList(){
+        try {
+            return machineService.getIdList();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new DefaultResponseDTO(201, ResponseStatus.FAILED,"Operation failed.");
+        }
+    }
 }

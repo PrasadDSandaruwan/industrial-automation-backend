@@ -21,13 +21,38 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,
-                        "/v1/user/add-user","/v1/user/get-all-users" )
+                        "/v1/user/add-user","/v1/user/get-all-users" ,"/v1/alarm/add","/v1/alarm/edit/**"
+                ,"/v1/production-line/add","/v1/machine-type/add",
+                        "/v1/machine/add","/v1/machine/edit/**","/v1/command/add","/v1/command/edit/**",
+                        "/v1/connected-machine/add","/v1/connected-machine/edit"
+                )
                 .hasAnyAuthority("ADMIN")
+
+
+
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.DELETE,"/v1/machine/delete/**","/v1/alarm/delete/**","/v1/user/delete/**")
+                .hasAnyAuthority("ADMIN")
+
+
+
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET,  "/v1/production-line/all","/v1/machine-type/all","/v1/connected-machine/possible/**"
+                , "/v1/alarms/unique/**","/v1/machine/unique/**","/v1/production-line/unique/**","/v1/user/unique/"
+
+                )
+                .hasAnyAuthority("ADMIN")
+
+
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/v1/user/user-details","/v1/user/force-password-change",
-                        "/v1/user/change-password","/v1/user/first-time-change-password"
-                        )
+                        "/v1/user/change-password","/v1/user/first-time-change-password","/v1/alarm/all","/v1/alarms/details/**",
+                        "/v1/machine/all","/v1/machine/details/**","/v1/machine/get-by-line"
+
+                )
                 .authenticated()
 
 
@@ -35,36 +60,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,
                         "/v1/user/change-password","/v1/user/first-time-change-password",
-                        "/v1/user/update-profile"
+                        "/v1/user/update-profile","/v1/rates/get-rates","/v1/rates/add","/v1/connected-machine/rate"
+
                 )
                 .authenticated()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/v1/alarm/add","/v1/alarm/edit/**","/v1/alarm/delete/**",
-                        "/v1/alarm/all","/v1/alarms/details/**",
-
-                        "/v1/production-line/add","/v1/machine-type/add",
-                        "/v1/machine/add","/v1/machine/edit/**",
-                        "/v1/machine/delete/**","/v1/machine/all","/v1/machine/details/**",
-
-
-                        "/v1/command/add","/v1/command/edit/**","/v1/production-line/all","/v1/machine-type/all",
-                        "/v1/connected-machine/add","/v1/connected-machine/edit","/v1/connected-machine/possible/**",
-                        "/v1/connected-machine/rate","/v1/machine/get-by-line",
-
-                        "/v1/rates/get-rates","/v1/rates/add")
-                .permitAll()
-
-
-
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.DELETE,
-                        "/v1/user/delete/**"
-                )
-                .hasAnyAuthority("ADMIN")
-
-
         ;
     }
 }

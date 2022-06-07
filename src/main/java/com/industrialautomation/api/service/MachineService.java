@@ -24,9 +24,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 @Service
 public class MachineService {
@@ -205,7 +203,7 @@ public class MachineService {
                         }
                     }
                     if (!found){
-                        add.put("alarm",new LinkedList<>());
+                        add.put("alarm",new HashMap<String,Object>());
                     }
                     line.add(add);
                 }
@@ -219,5 +217,22 @@ public class MachineService {
         return new DefaultResponseDTO(200,ResponseStatus.OK,"Data fetched successfully.", data);
 
 
+    }
+
+    public Object checkUnique(String slug) {
+
+        Machine machine = machineRepository.getMachineBySlug(slug);
+
+        if (machine==null)
+            return new DefaultResponseDTO(200,ResponseStatus.OK,"Slug is unique.");
+
+        return new DefaultResponseDTO(201,ResponseStatus.ALREADY_EXISTS,"Already exists");
+    }
+
+    public Object getIdList() {
+
+        List<Long> machine = machineRepository.getAllMachineId();
+
+        return new DefaultResponseDTO(200,ResponseStatus.OK,"Data fecthed.", machine);
     }
 }
