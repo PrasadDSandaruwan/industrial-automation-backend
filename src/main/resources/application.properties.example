@@ -1,1 +1,27 @@
+# set server port
 server.port=8081
+
+# mysql database connection
+spring.datasource.url=jdbc:mysql://localhost:[port]/[db_name]
+spring.datasource.username=[username]
+spring.datasource.password=[password]
+
+# mysql properties
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL57InnoDBDialect
+
+
+# custom banner
+spring.banner.location=classpath:my_banner.txt
+
+# jwt token
+custom.authentication.oauth.client_id=clientId
+custom.authentication.oauth.client_secret=clientSecret
+custom.authentication.jwt_signing_mac_key=jwtSigningKey
+custom.authentication.access_token_validity_seconds=100000
+custom.authentication.oauth.refresh_token_validity_seconds=2000
+
+custom.app.frontend_url=http://localhost:3000
